@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronômetro</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #cronometro {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div id="cronometro">00:00:00</div>
+        <button id="iniciar">Iniciar</button>
+        <button id="pausar">Pausar</button>
+        <button id="reiniciar">Reiniciar</button>
+    </div>
+
+    <script>
+        let tempo = 0;
+        let cronometro;
+        let executando = false;
+
+        const display = document.getElementById('cronometro');
+
+        function atualizarDisplay() {
+            const horas = String(Math.floor(tempo / 3600)).padStart(2, '0');
+            const minutos = String(Math.floor((tempo % 3600) / 60)).padStart(2, '0');
+            const segundos = String(tempo % 60).padStart(2, '0');
+            display.textContent = `${horas}:${minutos}:${segundos}`;
+        }
+
+        document.getElementById('iniciar').addEventListener('click', () => {
+            if (!executando) {
+                executando = true;
+                cronometro = setInterval(() => {
+                    tempo++;
+                    atualizarDisplay();
+                }, 1000);
+            }
+        });
+
+        document.getElementById('pausar').addEventListener('click', () => {
+            executando = false;
+            clearInterval(cronometro);
+        });
+
+        document.getElementById('reiniciar').addEventListener('click', () => {
+            executando = false;
+            clearInterval(cronometro);
+            tempo = 0;
+            atualizarDisplay();
+        });
+    </script>
+</body>
+</html>
